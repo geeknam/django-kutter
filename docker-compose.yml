@@ -1,0 +1,86 @@
+db:
+  build: Dockerfiles/postgres
+  environment:
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=postgres
+
+cache:
+  image: redis
+
+broker:
+  image: tutum/rabbitmq
+  environment:
+    - RABBITMQ_USER={{broker_user}}
+    - RABBITMQ_PASS={{broker_password}}
+
+web:
+  build: Dockerfiles/nginx
+  working_dir: /etc/nginx
+  ports:
+    - "80:80"
+  links:
+    - app
+
+app:
+  build: .
+  working_dir: /code/{{project_name}}
+  command: python manage.py runserver 0.0.0.0:8000
+  environment:
+    - DJANGO_CONFIGURATION=Local
+    - DJANGO_SETTINGS_MODULE={{project_name}}.settings
+    - DATABASE_HOST=db
+    - DATABASE_NAME=postgres
+    - DATABASE_USER=postgres
+    - DATABASE_PASSWORD=postgres
+    - BROKER_URL=amqp://{{broker_user}}:{{broker_password}}@broker:5672//
+    - REDIS_CACHE_URL=cache:6379:1
+    - KSUB_CELERY_RESULT_BACKEND=redis://cache:6379/3
+  volumes:
+    - .:/code
+  links:
+    - db
+    - cache
+    - broker
+
+tests:
+  build: .
+  working_dir: /code/{{project_name}}
+  command: python manage.py test apps/ -v 2
+  environment:
+    - DJANGO_CONFIGURATION=Local
+    - DJANGO_SETTINGS_MODULE=ksub.settings
+    - DATABASE_HOST=db
+    - DATABASE_NAME=postgres
+    - DATABASE_USER=postgres
+    - DATABASE_PASSWORD=postgres
+    - BROKER_URL=amqp://{{broker_user}}:{{broker_password}}@broker:5672//
+    - REDIS_CACHE_URL=cache:6379:1
+    - KSUB_CELERY_RESULT_BACKEND=redis://cache:6379/3
+  links:
+    - db
+    - cache
+    - broker
+
+{% if cookiecutter.use_celery == 'y' %}
+worker:
+  build: .
+  working_dir: /code/{{project_name}}
+  command: celery -A {{project_name}} worker -l info
+  environment:
+    - DJANGO_CONFIGURATION=Local
+    - DJANGO_SETTINGS_MODULE={{project_name}}.settings
+    - DATABASE_HOST=db
+    - DATABASE_NAME=postgres
+    - DATABASE_USER=postgres
+    - DATABASE_PASSWORD=postgres
+    - BROKER_URL=amqp://{{broker_user}}:{{broker_password}}@broker:5672//
+    - KSUB_CELERY_RESULT_BACKEND=redis://cache:6379/3
+    - REDIS_CACHE_URL=cache:6379:1
+    - C_FORCE_ROOT=true
+  volumes:
+    - .:/code
+  links:
+    - db
+    - cache
+    - broker
+{% endif %}

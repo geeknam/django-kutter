@@ -42,7 +42,8 @@ def docker_compose_up():
     ]
     print 'Firing up new "{{cookiecutter.repo_name}}" containers...'
     process = subprocess.Popen(
-        commands, stdout=subprocess.PIPE
+        commands, stdout=subprocess.PIPE,
+        env=dict(os.environ)
     )
     process.communicate()
 

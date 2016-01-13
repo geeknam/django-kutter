@@ -1,5 +1,6 @@
 {
     "project_name": "project_name",
+    "repo_name": "{{ cookiecutter.project_name}}",
     "author_name": "Nam Ngo",
     "email": "nam@kogan.com.au",
     "description": "A short description of the project.",

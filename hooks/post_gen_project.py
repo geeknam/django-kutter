@@ -1,7 +1,8 @@
 import subprocess
 
 commands = [
-    'docker-machine', 'create', '{{cookiecutter.repo_name}}'
+    'docker-machine', 'create', '--driver',
+    'virtualbox', '{{cookiecutter.repo_name}}'
 ]
 
 process = subprocess.Popen(

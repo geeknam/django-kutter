@@ -1,6 +1,7 @@
 import subprocess
 import webbrowser
 
+
 def create_docker_machine():
     commands = [
         'docker-machine', 'create', '--driver',
@@ -14,6 +15,16 @@ def create_docker_machine():
 
 
 def docker_compose_up():
+
+    set_env = [
+        'eval'
+        '"$(docker-machine env {{cookiecutter.repo_name}})"'
+    ]
+    process = subprocess.Popen(
+        set_env, stdout=subprocess.PIPE
+    )
+    process.communicate()
+
     commands = [
         'docker-compose', 'up', '-d',
     ]

@@ -48,8 +48,8 @@ class BaseSettings(Configuration):
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
     )
 
-    ROOT_URLCONF = '{{project_name}}.urls'
-    WSGI_APPLICATION = '{{project_name}}.wsgi.application'
+    ROOT_URLCONF = '{{cookiecutter.repo_name}}.urls'
+    WSGI_APPLICATION = '{{cookiecutter.repo_name}}.wsgi.application'
 
     # In production use values.SecretValue()
     SECRET_KEY = 'CHANGEME!!NOW!!PLEASE!!'
@@ -64,7 +64,7 @@ class BaseSettings(Configuration):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': os.environ.get('DATABASE_NAME', '{{project_name}}_db'),
+            'NAME': os.environ.get('DATABASE_NAME', '{{cookiecutter.repo_name}}_db'),
             'USER': os.environ.get('DATABASE_USER', ''),
             'PASSWORD': os.environ.get('DATABASE_PASSWORD', ''),
             'HOST': os.environ.get('DATABASE_HOST', 'localhost'),
@@ -83,10 +83,10 @@ class BaseSettings(Configuration):
     }
 
     BROKER_URL = values.Value(
-        "redis://localhost:6379/2", environ_prefix="{{project_name}}".upper()
+        "redis://localhost:6379/2", environ_prefix="{{cookiecutter.repo_name}}".upper()
     )
     CELERY_RESULT_BACKEND = values.Value(
-        "redis://localhost:6379/3", environ_prefix="{{project_name}}".upper()
+        "redis://localhost:6379/3", environ_prefix="{{cookiecutter.repo_name}}".upper()
     )
     CELERYBEAT_SCHEDULE = {
     }
@@ -192,7 +192,7 @@ class BaseSettings(Configuration):
     }
 
     # Site Domain
-    DOMAIN_NAME = values.Value('{{project_name}}.local', environ_prefix="{{project_name}}".upper())
+    DOMAIN_NAME = values.Value('{{cookiecutter.repo_name}}.local', environ_prefix="{{cookiecutter.repo_name}}".upper())
     ALLOWED_HOSTS = ['*']
 
 
@@ -217,15 +217,15 @@ class Production(BaseSettings):
 
     DEBUG = values.BooleanValue(False)
     ALLOWED_HOSTS = values.ListValue(
-        ['*'], environ_prefix="{{project_name}}".upper()
+        ['*'], environ_prefix="{{cookiecutter.repo_name}}".upper()
     )
-    SECRET_KEY = values.SecretValue(environ_prefix="{{project_name}}".upper())
+    SECRET_KEY = values.SecretValue(environ_prefix="{{cookiecutter.repo_name}}".upper())
     DATABASES = values.DatabaseURLValue(
         'sqlite://dev.db', alias='default',
-        environ_prefix="{{project_name}}".upper()
+        environ_prefix="{{cookiecutter.repo_name}}".upper()
     )
     CACHES = values.CacheURLValue(
-        'locmem://', alias='default', environ_prefix="{{project_name}}".upper()
+        'locmem://', alias='default', environ_prefix="{{cookiecutter.repo_name}}".upper()
     )
 
     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'

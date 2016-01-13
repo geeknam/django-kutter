@@ -5,12 +5,12 @@ from configurations import importer
 from celery import Celery
 from django.conf import settings
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "{{project_name}}.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "{{cookiecutter.repo_name}}.settings")
 os.environ.setdefault("DJANGO_CONFIGURATION", "")
 
 importer.install()
 
-app = Celery('{{project_name}}')
+app = Celery('{{cookiecutter.repo_name}}')
 app.config_from_object('django.conf:settings')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 

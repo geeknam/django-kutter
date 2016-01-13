@@ -4,7 +4,7 @@ import sys
 import logging
 
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "{{project_name}}.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "{{cookiecutter.repo_name}}.settings")
     os.environ.setdefault("DJANGO_CONFIGURATION", "Local")
 
     APPS_ROOT = os.path.abspath(os.path.dirname(__file__))

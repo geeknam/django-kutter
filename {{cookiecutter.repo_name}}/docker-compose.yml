@@ -10,8 +10,8 @@ cache:
 broker:
   image: tutum/rabbitmq
   environment:
-    - RABBITMQ_USER={{broker_user}}
-    - RABBITMQ_PASS={{broker_password}}
+    - RABBITMQ_USER={{cookiecutter.broker_user}}
+    - RABBITMQ_PASS={{cookiecutter.broker_password}}
 
 web:
   build: Dockerfiles/nginx
@@ -32,7 +32,7 @@ app:
     - DATABASE_NAME=postgres
     - DATABASE_USER=postgres
     - DATABASE_PASSWORD=postgres
-    - BROKER_URL=amqp://{{broker_user}}:{{broker_password}}@broker:5672//
+    - BROKER_URL=amqp://{{cookiecutter.broker_user}}:{{cookiecutter.broker_password}}@broker:5672//
     - REDIS_CACHE_URL=cache:6379:1
     - KSUB_CELERY_RESULT_BACKEND=redis://cache:6379/3
   volumes:
@@ -53,7 +53,7 @@ tests:
     - DATABASE_NAME=postgres
     - DATABASE_USER=postgres
     - DATABASE_PASSWORD=postgres
-    - BROKER_URL=amqp://{{broker_user}}:{{broker_password}}@broker:5672//
+    - BROKER_URL=amqp://{{cookiecutter.broker_user}}:{{cookiecutter.broker_password}}@broker:5672//
     - REDIS_CACHE_URL=cache:6379:1
     - KSUB_CELERY_RESULT_BACKEND=redis://cache:6379/3
   links:
@@ -73,7 +73,7 @@ worker:
     - DATABASE_NAME=postgres
     - DATABASE_USER=postgres
     - DATABASE_PASSWORD=postgres
-    - BROKER_URL=amqp://{{broker_user}}:{{broker_password}}@broker:5672//
+    - BROKER_URL=amqp://{{cookiecutter.broker_user}}:{{cookiecutter.broker_password}}@broker:5672//
     - KSUB_CELERY_RESULT_BACKEND=redis://cache:6379/3
     - REDIS_CACHE_URL=cache:6379:1
     - C_FORCE_ROOT=true

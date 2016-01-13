@@ -21,7 +21,6 @@ git+https://github.com/gciding/django-cache-url.git#egg=django-cache-url
 ipython
 
 # Server Monitoring
-newrelic==2.56.0.42
 raven==5.8.1
 
 django-extensions==1.5.7

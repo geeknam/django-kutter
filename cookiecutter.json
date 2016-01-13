@@ -1,0 +1,11 @@
+{
+    "project_name": "project_name",
+    "author_name": "Nam Ngo",
+    "email": "nam@kogan.com.au",
+    "description": "A short description of the project.",
+    "version": "0.1.0",
+    "timezone": "UTC",
+    "now": "2016/01/07",
+    "year": "{{ cookiecutter.now[:4] }}",
+    "use_celery": "y"
+}

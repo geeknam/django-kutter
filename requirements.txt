@@ -1,0 +1,27 @@
+Django==1.8.7
+
+gunicorn==19.3.0
+
+# Database
+psycopg2==2.5.3
+
+# Cache and task queues
+celery[redis]==3.1.18
+
+# Cache, key value store
+django-redis==3.5
+
+# Config - pinned to a version not currently (2015-09-25) in pip which supports Django 1.8
+git+https://github.com/jezdez/django-configurations.git@5ece1070448d3e026b81422691c60207f5699c0c#egg=django-configurations
+dj-database-url==0.3.0
+dj-email-url==0.0.4
+git+https://github.com/gciding/django-cache-url.git#egg=django-cache-url
+
+# Shell niceness
+ipython
+
+# Server Monitoring
+newrelic==2.56.0.42
+raven==5.8.1
+
+django-extensions==1.5.7

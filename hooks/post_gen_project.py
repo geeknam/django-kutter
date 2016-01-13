@@ -1,5 +1,6 @@
 import subprocess
 import webbrowser
+import os
 
 
 def create_docker_machine():
@@ -14,17 +15,28 @@ def create_docker_machine():
     process.communicate()
 
 
-def docker_compose_up():
+def set_envs():
 
-    set_env = [
-        'eval'
-        '"$(docker-machine env {{cookiecutter.repo_name}})"'
+    envs = [
+        'docker-machine', 'env', 'kutta'
     ]
     process = subprocess.Popen(
-        set_env, stdout=subprocess.PIPE
+        envs, stdout=subprocess.PIPE
     )
-    process.communicate()
+    res = process.communicate()[0].split('\n')
+    output = [
+        line
+        for line in res
+        if line.startswith('export')
+    ][:-1]
 
+    for line in output:
+        env = line.split(' ')[1]
+        key, value = env.split('=')
+        os.environ[key] = value
+
+
+def docker_compose_up():
     commands = [
         'docker-compose', 'up', '-d',
     ]
@@ -43,5 +55,6 @@ def open_browser():
 
 
 create_docker_machine()
+set_envs()
 docker_compose_up()
 open_browser()

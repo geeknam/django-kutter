@@ -33,7 +33,7 @@ def set_envs():
     for line in output:
         env = line.split(' ')[1]
         key, value = env.split('=')
-        os.environ[key] = value
+        os.environ[key] = value[1:-1]
 
 
 def docker_compose_up():
